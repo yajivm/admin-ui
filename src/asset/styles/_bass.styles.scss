@@ -1,0 +1,22 @@
+@mixin table-row {
+  display: flex;
+  flex-flow: nowrap;
+  box-pack: justify;
+  justify-content: space-between;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  padding: 4px 0;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+@mixin tabel-cell {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 18%;
+
+  &:first-child {
+    width: 70px;
+    justify-content: center;
+  }
+}
