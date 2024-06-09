@@ -20,3 +20,30 @@
     justify-content: center;
   }
 }
+
+@mixin breakpoint($width) {
+  @if $width == 'xs' {
+    @media only screen and (max-width: 767px) {
+      @content;
+    }
+  }
+  @if $width == small {
+    @media only screen and (max-width: 1023px) {
+      @content;
+    }
+  } 
+  @if $width == medium {
+    @media only screen and (max-width: 1439px) {
+      @content;
+    }
+  } 
+  @if $width == large {
+    @media only screen and (max-width: 1439px) {
+      @content;
+    }
+  } @else {
+    @media only screen and (min-width: 1440px) {
+      @content;
+    }
+  }
+}

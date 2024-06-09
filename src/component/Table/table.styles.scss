@@ -2,6 +2,7 @@
 
 .table {
   margin-bottom: 20px;
+  min-height: calc(100vh - 200px);
 
   .table-row {
     @include table-row();
@@ -11,6 +12,17 @@
 
       .head-cell {
         padding: 10px 0;
+
+        @media only screen and (max-width: 900px) {
+          &:nth-child(2) {
+            width: calc(100% - 250px);
+          }
+        }
+        @media only screen and (max-width: 500px) {
+          &:nth-child(2) {
+            width: calc(100% - 70px);
+          }
+        }
       }
     }
 
@@ -27,42 +39,71 @@
       pointer-events: none;
       opacity: 0.2;
     }
+
+    &.responsive-table {
+      display: block;
+      .table-cell {
+        display: inline-block;
+
+        .checkbox-wrapper {
+          text-align: center;
+        }
+
+        &.action-item-cell {
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
+
+          .action-items-wrapper {
+            width: calc(100% - 65px);
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0 10px 65px;
+
+            .action-button {
+              margin: 0;
+              width: 48%;
+              border: 1px solid #b4b4b4;
+              border-radius: 3px;
+            }
+          }
+        }
+      }
+
+      .responsive-table-cell {
+        width: calc(100% - 70px);
+      }
+      
+    }
   }
 
   .action-items-wrapper {
     .action-button {
-      margin: 8px;
-      border: 0;
-      background-color: transparent;
-      cursor: pointer;
-
-      img {
-        width: 20px;
-        padding: 5px;
-      }
-
       &:first-child {
         margin-left: 0;
+        padding-left: 0;
       }
+    }
+  }
 
-      &:hover {
-        background-color: #f7f7f7;
-      }
+  @media only screen and (max-width: 900px) {
+    .responsive-table-cell {
+      display: inline-flex;
+      flex-direction: column;
+      width: calc(100% - 250px);
 
-      &.non-bg {
-        img {
-          width: 30px;
-          padding: 0;
-        }
+      div {
+        display: flex;
+        margin-bottom: 5px;
 
-        &:hover {
-          background-color: transparent;
+        &:last-child {
+          margin-bottom: 0;
         }
       }
     }
   }
 }
 
-.button-wrapper {
+.table-bottom-wrapper {
   margin-bottom: 30px;
 }

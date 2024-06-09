@@ -11,7 +11,7 @@ import '../table.styles.scss';
 
 const { USER_TABLE_HEAD } = Config;
 
-const TableHead = ({ onSelectAllTableRow }) => {
+const TableHead = ({ screenSize, onSelectAllTableRow, isCheckBoxDisabled }) => {
 
   const { isAllUsersChecked } = useContext(UserContext);
 
@@ -19,22 +19,42 @@ const TableHead = ({ onSelectAllTableRow }) => {
     onSelectAllTableRow(!isAllUsersChecked);
   };
 
+  const getUserTableHead = () => (
+    screenSize > 900 ?
+      USER_TABLE_HEAD.map((headText, ind) => (
+        <div key={`head-cell-${ind}`} className="head-cell">{headText}</div>
+      ))
+    :
+      screenSize > 500 ?
+        <>
+          <div className="head-cell">User</div>
+          <div className="head-cell">Actions</div>
+        </>
+      :
+        <div className="head-cell">User</div>
+  );
+
+  const responsiveTableHeadClassName = screenSize < 900 ? ' responsive-head' : '';
+
   return (
-    <div className="table-row table-head">
+    <div className={`table-row table-head${responsiveTableHeadClassName}`}>
       <div className="head-cell">
-        <CheckBox handleCheckboxChange={onCheckedAllBoxes} checked={isAllUsersChecked} testID="all-user-selection" />
+        <CheckBox
+          testID="all-user-selection"
+          handleCheckboxChange={onCheckedAllBoxes}
+          checked={isAllUsersChecked}
+          isCheckBoxDisabled={isCheckBoxDisabled}
+        />
       </div>
-      {
-        USER_TABLE_HEAD.map((headText, ind) => (
-          <div key={`head-cell-${ind}`} className="head-cell">{headText}</div>
-        ))
-      }
+      {getUserTableHead()}
     </div>
   );
 };
 
 TableHead.propTypes = {
   onSelectAllTableRow: PropTypes.func.isRequired,
+  screenSize: PropTypes.number.isRequired,
+  isCheckBoxDisabled: PropTypes.bool.isRequired,
 };
 
 export default TableHead;

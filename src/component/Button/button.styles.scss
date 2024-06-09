@@ -27,3 +27,35 @@
     }
   }
 }
+
+.action-button {
+  margin: 8px;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+
+  img {
+    width: 20px;
+    padding: 5px;
+  }
+
+  &:hover {
+    background-color: #f7f7f7;
+  }
+
+  &.non-bg {
+    img {
+      width: 30px;
+      padding: 0;
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  @media only screen and (max-width: 595px) {
+    margin: 0;
+    padding: 0;
+  }
+}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 // Component
 import CheckBox from "../../CheckBox";
 import TextBox from '../../TextBox';
+import Button from '../../Button'; 
 // Icons
 import EditIcon from '../../../asset/icon/edit.png';
 import DeleteIcon from '../../../asset/icon/delete.png';
@@ -21,8 +22,17 @@ const TableBodyRow = ({
   handleEditRow,
   handleCancelEdit,
   handleSaveRowData,
+  screenSize,
+  isCheckBoxDisabled,
 }) => {
   const { checked, email, id, name, role } = tableCellData;
+  const isRowDisbaled = editableRowData.action === EDIT_ROW && editableRowData.id !== id;
+  const canShowSaveCancelCTAs = editableRowData.action === EDIT_ROW && editableRowData.id === id;
+  const userData = {
+    name,
+    email,
+    role
+  };
 
   const [modifiedRowsData, setModifiedRowData] = useState([]);
 
@@ -45,42 +55,77 @@ const TableBodyRow = ({
     return <>{value}</>;
   }
 
-  const isRowDisbaled = editableRowData.action === EDIT_ROW && editableRowData.id !== id;
-  const canShowSaveCancelCTAs = editableRowData.action === EDIT_ROW && editableRowData.id === id;
+  const userCellClassName = `${screenSize < 900 ? '' : 'table-cell'}`;
+  const tableResponsiveClassName =
+    `table-row ${checked ? 'selected-row' : ''} ${isRowDisbaled ? 'disabled' : ''} ${screenSize < 500 ? 'responsive-table' : ''}`;
+
+  const getUserData = (type, value) => (
+    <div className={userCellClassName} key={`user-${type}-${id}`}>
+      {type !== 'role' ?
+        loadEditableInputField(type, value)
+      :
+        <>
+          {value !== NON_EDITABLE_FIELD_NAME ? loadEditableInputField(type, value) : value}
+        </>
+      }
+    </div>
+  );
+
+  const getUserCellData = () => {
+    return Object.keys(userData).map(key => getUserData(key, userData[key]));
+  };
+
+  const getUserTableCell = () => {
+    return screenSize < 900 ?
+      <div className="responsive-table-cell">
+        {getUserCellData()}
+      </div>
+    :
+      <>
+        {getUserCellData()}
+      </>;
+  };
 
   return(
-    <div className={`table-row ${checked ? 'selected-row' : ''} ${isRowDisbaled ? 'disabled' : ''}`}>
+    <div className={tableResponsiveClassName}>
       <div className="table-cell">
-        <CheckBox testID={`user-${id}`} checked={checked} handleCheckboxChange={() => onSelectTabelRow(id, !checked)} />
+        <CheckBox
+          testID={`user-${id}`}
+          checked={checked}
+          handleCheckboxChange={() => onSelectTabelRow(id, !checked)}
+          isCheckBoxDisabled={isCheckBoxDisabled}
+        />
       </div>
-      <div className="table-cell">
-        {loadEditableInputField('name', name)}
-      </div>
-      <div className="table-cell">
-        {loadEditableInputField('email', email)}
-      </div>
-      <div className="table-cell">
-        {role !== NON_EDITABLE_FIELD_NAME ? loadEditableInputField('role', role) : role}
-      </div>
-      <div className="table-cell">
+      {getUserTableCell()}
+      <div className={'table-cell action-item-cell'}>
         <div className="action-items-wrapper">
           {canShowSaveCancelCTAs ?
             <>
-              <button className="action-button save non-bg" data-test="save-button" onClick={() => handleSaveRowData(modifiedRowsData)}>
-                <img src={SaveIcon} alt="Save" title="save" className="save-icon" />
-              </button>
-              <button className="action-button cancel non-bg" data-test="cancel-button" onClick={handleCancelEdit}>
-                <img src={CancelIcon} alt="Cancel" title="cancel" className="cancel-icon" />
-              </button>
+              <Button
+                onClick={() => handleSaveRowData(modifiedRowsData)}
+                buttonImage={SaveIcon}
+                imgType="save"
+                isImgWithBg
+              />
+              <Button
+                onClick={handleCancelEdit}
+                buttonImage={CancelIcon}
+                imgType="cancel"
+                isImgWithBg
+              />
             </>
           :
             <>
-              <button className="action-button edit" data-test="edit-button" onClick={() => handleEditRow(id)}>
-                <img src={EditIcon} alt="Edit" title="edit" className="edit-icon" />
-              </button>
-              <button className="action-button delete" data-test="delete-button" onClick={() => handleDeleteTableRow(id)}>
-                <img src={DeleteIcon} alt="Delete" title="delete" className="delete-icon" />
-              </button>
+              <Button
+                onClick={(e) => handleEditRow(id)}
+                buttonImage={EditIcon}
+                imgType="edit"
+              />
+              <Button
+                onClick={(e) => handleDeleteTableRow(id)}
+                buttonImage={DeleteIcon}
+                imgType="delete"
+              />
             </>
           }
         </div>
@@ -105,6 +150,8 @@ TableBodyRow.propTypes = {
   handleEditRow: PropTypes.func.isRequired,
   handleCancelEdit: PropTypes.func.isRequired,
   handleSaveRowData: PropTypes.func.isRequired,
+  screenSize: PropTypes.number.isRequired,
+  isCheckBoxDisabled: PropTypes.bool.isRequired,
 };
 
 export default TableBodyRow;

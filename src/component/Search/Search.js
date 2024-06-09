@@ -1,31 +1,42 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-
+// Context
+import UserContext from "../../context/userContext";
+// Icons
 import CrossIcon from '../../asset/icon/cross.svg';
 import SearchIcon from '../../asset/icon/search.svg';
-
+// Component
+import Button from '../Button';
+//
 import './search.styles.scss';
 
-const Search = ({ onInputChange, resetInputChange, disabled = false }) => {
+const Search = ({ searchableList, isSearchDisabled }) => {
+
+  const {
+    handleSearchUser,
+    resetSearchResults,
+  } = useContext(UserContext);
 
   const [inputValue, setInputValue] = useState('');
 
   const onChangeInputValue = (value) => {
     setInputValue(value);
-  };
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onInputChange(inputValue);
+    handleSearchUser(inputValue);
   }
 
   const clearInputValue = () => {
     setInputValue('');
-    resetInputChange();
+    resetSearchResults();
   };
 
+  const isDisabled = (!searchableList.length && !inputValue.length) || isSearchDisabled;
+
   return (
-    <div className={`input-box-wrapper ${disabled ? 'disabled' : ''}`}>
+    <div className={`input-box-wrapper ${isDisabled ? 'disabled' : ''}`}>
       <form className="search-form" data-testid="search-form" onSubmit={handleSubmit}>
         <input
           className="search-input"
@@ -36,24 +47,35 @@ const Search = ({ onInputChange, resetInputChange, disabled = false }) => {
         />
 
         {inputValue?.length ?
-          <div className="cross-icon-wrapper" data-testid="cross-icon" onClick={clearInputValue}>
-            <img src={CrossIcon} alt="Icon" title="Clear" className="cross-icon" />
-          </div>
+          <Button
+            imgType="cross"
+            onClick={clearInputValue}
+            buttonImage={CrossIcon}
+            btnClassName="cross-icon-wrapper"
+          />
         :
           <></>
         }
       </form>
-      <button className="search-button" data-testid="search-button" onClick={handleSubmit}>
-        <img src={SearchIcon} alt="search" title="search" className="search-icon" />
-      </button>
+      <Button
+        imgType="search"
+        onClick={handleSubmit}
+        buttonImage={SearchIcon}
+        btnClassName="search-button"
+        isSubmitButton
+      />
     </div>
   )
 };
 
 Search.propTypes = {
-  onInputChange: PropTypes.func.isRequired,
-  resetInputChange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
+  searchableList: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    role: PropTypes.string.isRequired,
+  })),
+  isSearchDisabled: PropTypes.bool.isRequired,
 };
 
 export default Search;

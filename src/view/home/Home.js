@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useState } from "react";
 // Components
 import Search from "../../component/Search";
 import Table from "../../component/Table";
@@ -10,54 +10,23 @@ import './home.styles.scss';
 
 const Home = () => {
 
-  const {
-    usersList,
-    onCheckAllUsers,
-    onSelectUser,
-    handleDeleteUserData,
-    updateUsersListData,
-  } = useContext(UserContext);
+  const [isUserInputDisabled, setIsUserInputDisabled] = useState(false);
 
-  const [filteredUserList, setFilteredUsersList] = useState([]);
+  const { userTableList } = useContext(UserContext);
 
-  useEffect(() => {
-    setFilteredUsersList(usersList);
-  }, [usersList]);
-
-  const onSearchUser = (searchKey) => {
-    let users = filteredUserList;
-    if (searchKey.length >= 1) {
-      users = filteredUserList.filter(user => Object
-        .keys(user)
-        .some(key => 
-          user[key].toLowerCase()?.includes(searchKey.toLowerCase())
-        )
-      );
-    }
-
-    if (searchKey.length === 0) {
-      users = usersList;
-    }
-
-    console.log('users', users);
-    setFilteredUsersList(users);
+  const setDisableSearchField = (toggledValue) => {
+    setIsUserInputDisabled(toggledValue);
   };
-
-  const resetSearchResults = () => setFilteredUsersList(usersList);
 
   return(
     <main>
-      <Search onInputChange={onSearchUser} resetInputChange={resetSearchResults} disabled={!usersList.length} />
-      {usersList.length ?
-        <>
-          <Table
-            tableData={filteredUserList}
-            onSelectAllTableRow={onCheckAllUsers}
-            onSelectTabelRow={onSelectUser}
-            handleDeleteTableRow={handleDeleteUserData}
-            handlEditTableRow={updateUsersListData}
-          />
-        </>
+      <Search searchableList={userTableList} isSearchDisabled={isUserInputDisabled} />
+      {userTableList.length ?
+        <Table
+          tableData={userTableList}
+          setDisableSearch={setDisableSearchField}
+          isCheckBoxDisabled={isUserInputDisabled}
+        />
       :
         <EmptyContainer />
       }

@@ -1,14 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 //
 import UserContext from "./userContext";
 
 // Service
 import { getUsersListService } from "../service/users.service";
 
+const DEFAULT = 'default';
+const SEARCH = 'search';
+const RESET_SEARCH = 'reset_search';
+const DEFAULT_SEARCH = { action: DEFAULT, value: '' };
+
 const UserProvider = ({ children }) => {
 
   const [usersList, setUsersList] = useState([]);
+  const [currentUserTableList, setCurrentUserTableList] = useState([]);
+  const [filteredUsersList, setFilteredUsersList] = useState([]);
   const [isAllUsersChecked, setAllUsersChecked] = useState(false);
+  const [searchKeyValue, setSearchKeyValue] = useState(DEFAULT_SEARCH);
 
   const getUsersList = () => {
     getUsersListService()
@@ -23,12 +31,54 @@ const UserProvider = ({ children }) => {
       });
   }
 
+  useEffect(() => { getUsersList() }, []);
+
+  const getSearchResults = useCallback(() => {
+    const { value: searchKey } = searchKeyValue;
+    if(searchKeyValue.value.length && searchKeyValue.action !== RESET_SEARCH) {
+      let listData = usersList;
+      if (searchKey.length) {
+        listData = listData.filter(user =>
+          Object
+            .keys(user)
+            .some(key => {
+              if (user[key]) {
+                return user[key].toLowerCase()?.includes(searchKey.toLowerCase())
+              }
+  
+              return false;
+            })
+        );
+      }
+
+      setFilteredUsersList(listData);
+    }
+  }, [searchKeyValue, usersList]);
+
   useEffect(() => {
-    getUsersList();
-  }, []);
+    getSearchResults();
+  }, [searchKeyValue, getSearchResults]);
+
+  const getCurrentListData = useCallback(() => {
+    let listData = usersList;
+    if (searchKeyValue.value.length && searchKeyValue.action !== RESET_SEARCH) {
+      listData = filteredUsersList;
+    }
+
+    return listData;
+  }, [searchKeyValue, usersList, filteredUsersList]);
+
+  const getCurrentTableData = useCallback((firstIndex, lastIndex) => {
+    const slicedUsersList = getCurrentListData().slice(firstIndex,lastIndex);
+    setCurrentUserTableList(slicedUsersList);
+  }, [getCurrentListData]);
+
+  useEffect(() => {
+    getCurrentTableData(0, 10);
+  }, [getCurrentTableData]);
 
   const onCheckAllUsers = (checked) => {
-    let checkedUsers = usersList.map(user => {
+    let checkedUsers = currentUserTableList.map(user => {
       return {
         ...user,
         checked,
@@ -36,7 +86,7 @@ const UserProvider = ({ children }) => {
     });
 
     setAllUsersChecked(checked);
-    setUsersList(checkedUsers);
+    setCurrentUserTableList(checkedUsers);
   };
 
   const onSelectUser = (id, checked) => {
@@ -56,8 +106,14 @@ const UserProvider = ({ children }) => {
   };
 
   const deleteSelectedUsers = () => {
-    const filteredUsers = usersList.filter(user => !user.checked);
+    let filteredUsers;
+    if (isAllUsersChecked) {
+      filteredUsers = usersList.filter(user1 => !currentUserTableList.some(user2 => user1.id === user2.id));
+    } else {
+      filteredUsers = usersList.filter(user => !user.checked);
+    }
 
+    setAllUsersChecked(false);
     setUsersList(filteredUsers);
   };
 
@@ -80,18 +136,32 @@ const UserProvider = ({ children }) => {
     });
 
     setUsersList(updatedList);
-  }
+  };
+
+  const resetSearchResults = () => {
+    setSearchKeyValue({ action: RESET_SEARCH, value: "" });
+  };
+
+  const handleSearchUser = (searchKey) => {
+    setSearchKeyValue({ action: SEARCH, value: searchKey});
+  };
 
   return (
     <UserContext.Provider value={{
-      usersList,
+      userTableList: getCurrentListData(),
       isAllUsersChecked,
+      currentUserTableList,
       deleteSelectedUsers,
       onCheckAllUsers,
       onSelectUser,
       setUsersList,
       updateUsersListData,
       handleDeleteUserData,
+      getCurrentTableData,
+      setAllUsersChecked,
+      handleSearchUser,
+      resetSearchResults,
+      setSearchKeyValue,
     }}>
       {children}
     </UserContext.Provider>
