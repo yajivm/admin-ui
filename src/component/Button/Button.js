@@ -1,4 +1,4 @@
-import { useEffect  } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import './button.styles.scss';
@@ -15,20 +15,20 @@ const Button = ({
   btnClassName = null,
   isSubmitButton = false
 }) => {
+  const buttonRef = useRef(null);
 
   const handleEnterKeyEvent = (e) => {
-    var key = e.keyCode || e.charCode;
-    if (key === 13) {
-      e.stopPropagation();
+    if(!isSubmitButton && e.key === "Enter") {
       e.preventDefault();
+      e.stopPropagation();
     }
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', handleEnterKeyEvent);
+    buttonRef?.current?.addEventListener('keydown', handleEnterKeyEvent);
 
     return () => {
-      window.removeEventListener('keydown', handleEnterKeyEvent);
+      buttonRef?.current?.removeEventListener('keydown', handleEnterKeyEvent);
     }
   }, []);
   
@@ -39,6 +39,7 @@ const Button = ({
         data-test={testID}
         onClick={onClick}
         type="button"
+        ref={buttonRef}
       >
         {buttonText}
       </button>
@@ -51,6 +52,7 @@ const Button = ({
       data-test={`${imgType}-button`}
       onClick={onClick}
       type={isSubmitButton ? 'submit' : 'button'}
+      ref={buttonRef}
     >
       <img src={buttonImage} alt={imgType} title={imgType} className={`${imgType}-icon`} />
     </button>
@@ -67,6 +69,7 @@ Button.propTypes = {
   imgType: PropTypes.string,
   isImgWithBg: PropTypes.bool,
   btnClassName: PropTypes.string,
+  isSubmitButton: PropTypes.bool,
 };
 
 export default Button;
