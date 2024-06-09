@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import './button.styles.scss';
@@ -17,20 +17,21 @@ const Button = ({
 }) => {
   const buttonRef = useRef(null);
 
-  const handleEnterKeyEvent = (e) => {
+  const handleEnterKeyEvent = useCallback((e) => {
     if(!isSubmitButton && e.key === "Enter") {
       e.preventDefault();
       e.stopPropagation();
     }
-  };
+  }, [isSubmitButton, ]);
 
   useEffect(() => {
-    buttonRef?.current?.addEventListener('keydown', handleEnterKeyEvent);
+    const buttonEl = buttonRef?.current;
+    buttonEl?.addEventListener('keydown', handleEnterKeyEvent);
 
     return () => {
-      buttonRef?.current?.removeEventListener('keydown', handleEnterKeyEvent);
+      buttonEl?.removeEventListener('keydown', handleEnterKeyEvent);
     }
-  }, []);
+  }, [handleEnterKeyEvent]);
   
   if (isButtonWithText) {
     return (
@@ -54,7 +55,7 @@ const Button = ({
       type={isSubmitButton ? 'submit' : 'button'}
       ref={buttonRef}
     >
-      <img src={buttonImage} alt={imgType} title={imgType} className={`${imgType}-icon`} />
+      <img src={buttonImage} alt={imgType} title={imgType} />
     </button>
   )
 };

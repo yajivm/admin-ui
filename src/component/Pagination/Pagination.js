@@ -4,7 +4,7 @@ import {
   DISABLED,
   DOTS,
   ACTIVE,
-  NORMAL,
+  NON_ACTIVE,
   COMMON_BUTTON_CLS_NAME,
   ROW_COUNT_PER_PAGE,
 }
@@ -44,8 +44,12 @@ const Pagination = ({
   const lastPage = Math.ceil(totalDataCount / tabelSize);
 
   const getButtonDisabledStatus = pageNum => currentPage === pageNum ? DISABLED : '';
-  const getPageNumButtonActiveStatus = pageNum => currentPage === pageNum? ACTIVE : NORMAL ;
-  const getCommonPageNumBtnClassName = type => `${COMMON_BUTTON_CLS_NAME} ${type}--page`
+  const getPageNumButtonActiveStatus = pageNum => currentPage === pageNum? ACTIVE : NON_ACTIVE ;
+  const getCommonPageNumBtnClassName = type => `${COMMON_BUTTON_CLS_NAME} ${type}-page`;
+  const getPageClassNameWithNumber = (ind, pageNum) =>
+    ind === 0 ? `first-page` :
+      ind === pageNumbers.length - 1 ?
+        `last-page` : `page-number-${pageNum}`;
 
   return (
     <div className="pagination-wrapper">
@@ -80,7 +84,7 @@ const Pagination = ({
                         isButtonWithText
                         buttonText={`${no}`}
                         onClick={() => onPageChange(no)}
-                        btnClassName={`${COMMON_BUTTON_CLS_NAME} ${getPageNumButtonActiveStatus(no)}`}
+                        btnClassName={`${COMMON_BUTTON_CLS_NAME} ${getPageClassNameWithNumber(ind, no)} ${getPageNumButtonActiveStatus(no)}`}
                       />
                     </li>
                   )

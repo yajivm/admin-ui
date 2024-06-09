@@ -61,7 +61,7 @@ const Search = ({ searchableList, isSearchDisabled }) => {
         imgType="search"
         onClick={handleSubmit}
         buttonImage={SearchIcon}
-        btnClassName="search-button"
+        btnClassName="search-icon"
         isSubmitButton
       />
     </div>
