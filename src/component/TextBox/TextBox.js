@@ -19,7 +19,7 @@ const TextBox = ({
 
   return (
     <div className="form-field">
-      <input className="text-input" type="text" data-test={testID} value={inputValue} onChange={onInputValueChange} />
+      <input className="text-input" type="text" data-testid={testID} value={inputValue} onChange={onInputValueChange} />
     </div>
   );
 };

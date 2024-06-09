@@ -10,7 +10,7 @@ import Button from '../Button';
 //
 import './search.styles.scss';
 
-const Search = ({ searchableList, isSearchDisabled }) => {
+const Search = ({ searchableList, isSearchDisabled = false }) => {
 
   const {
     handleSearchUser,
@@ -40,7 +40,7 @@ const Search = ({ searchableList, isSearchDisabled }) => {
       <form className="search-form" data-testid="search-form" onSubmit={handleSubmit}>
         <input
           className="search-input"
-          data-test="search-input"
+          data-testid="search-input"
           onChange={({ target: { value }}) => onChangeInputValue(value)}
           placeholder="Search by name, email or role"
           value={inputValue}
@@ -75,7 +75,7 @@ Search.propTypes = {
     email: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
   })),
-  isSearchDisabled: PropTypes.bool.isRequired,
+  isSearchDisabled: PropTypes.bool,
 };
 
 export default Search;

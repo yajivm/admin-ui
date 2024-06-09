@@ -46,7 +46,7 @@ const Pagination = ({
   const getButtonDisabledStatus = pageNum => currentPage === pageNum ? DISABLED : '';
   const getPageNumButtonActiveStatus = pageNum => currentPage === pageNum? ACTIVE : NON_ACTIVE ;
   const getCommonPageNumBtnClassName = type => `${COMMON_BUTTON_CLS_NAME} ${type}-page`;
-  const getPageClassNameWithNumber = (ind, pageNum) =>
+  const getPageNumerElementWithAttr = (ind, pageNum) =>
     ind === 0 ? `first-page` :
       ind === pageNumbers.length - 1 ?
         `last-page` : `page-number-${pageNum}`;
@@ -56,6 +56,7 @@ const Pagination = ({
       <ul>
           <li>
             <Button
+              testID="first-page"
               isButtonWithText
               buttonText={`<<`}
               onClick={() => onPageChange(1)}
@@ -64,6 +65,7 @@ const Pagination = ({
           </li>
           <li>
             <Button
+              testID="previous-page"
               isButtonWithText
               buttonText={`<`}
               onClick={onClickPrevious}
@@ -81,10 +83,11 @@ const Pagination = ({
                   return (
                     <li key={`page-number-${no}`}>
                       <Button
+                        testID={`${getPageNumerElementWithAttr(ind, no)}`}
                         isButtonWithText
                         buttonText={`${no}`}
                         onClick={() => onPageChange(no)}
-                        btnClassName={`${COMMON_BUTTON_CLS_NAME} ${getPageClassNameWithNumber(ind, no)} ${getPageNumButtonActiveStatus(no)}`}
+                        btnClassName={`${COMMON_BUTTON_CLS_NAME} ${getPageNumerElementWithAttr(ind, no)} ${getPageNumButtonActiveStatus(no)}`}
                       />
                     </li>
                   )
@@ -96,6 +99,7 @@ const Pagination = ({
           }
           <li>
             <Button
+              testID="next-page"
               isButtonWithText
               buttonText={`>`}
               onClick={onClickNext}
@@ -104,6 +108,7 @@ const Pagination = ({
           </li>
           <li>
             <Button
+              testID="last-page"
               isButtonWithText
               buttonText={`>>`}
               onClick={() => onPageChange(lastPage)}

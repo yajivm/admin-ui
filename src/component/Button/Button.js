@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
+//
 import PropTypes from 'prop-types';
 
 import './button.styles.scss';
@@ -37,7 +38,7 @@ const Button = ({
     return (
       <button
         className={btnClassName ? btnClassName : `button ${type}`}
-        data-test={testID}
+        data-testid={testID}
         onClick={onClick}
         type="button"
         ref={buttonRef}
@@ -46,18 +47,22 @@ const Button = ({
       </button>
     )
   }
+  
+  if (!isButtonWithText && !!buttonImage) {
+    return (
+      <button
+        className={btnClassName ? btnClassName : `action-button ${imgType}${isImgWithBg ? ' non-bg' : ''}`}
+        data-testid={`${imgType}-button`}
+        onClick={onClick}
+        type={isSubmitButton ? 'submit' : 'button'}
+        ref={buttonRef}
+      >
+        <img src={buttonImage} alt={imgType} title={imgType} />
+      </button>
+    );
+  }
 
-  return (
-    <button
-      className={btnClassName ? btnClassName : `action-button ${imgType}${isImgWithBg ? ' non-bg' : ''}`}
-      data-test={`${imgType}-button`}
-      onClick={onClick}
-      type={isSubmitButton ? 'submit' : 'button'}
-      ref={buttonRef}
-    >
-      <img src={buttonImage} alt={imgType} title={imgType} />
-    </button>
-  )
+  return <></>;
 };
 
 Button.propTypes = {

@@ -6,9 +6,9 @@ const CheckBox = ({
   testID = 'user-box',
   checked,
   handleCheckboxChange,
-  isCheckBoxDisabled,
+  isCheckBoxDisabled = false,
 }) => (
-  <div className={ `checkbox-wrapper${isCheckBoxDisabled ? ' disabled' : ''}`}>
+  <div data-testid={`${testID}-wrapper`} className={`checkbox-wrapper${isCheckBoxDisabled ? ' disabled' : ''}`}>
     <input type="checkbox" checked={checked} onChange={handleCheckboxChange} data-testid={testID} />
     <label data-testid={`${testID}-label`} />
   </div>
@@ -18,7 +18,7 @@ CheckBox.propTypes = {
   handleCheckboxChange: PropTypes.func.isRequired,
   testID: PropTypes.string,
   checked: PropTypes.bool.isRequired,
-  isCheckBoxDisabled: PropTypes.bool.isRequired
+  isCheckBoxDisabled: PropTypes.bool
 };
 
 export default CheckBox;

@@ -55,7 +55,7 @@ const TableBodyRow = ({
 
   const userCellClassName = `${screenSize < 900 ? '' : 'table-cell'}`;
   const tableResponsiveClassName =
-    `table-row ${checked ? 'selected-row' : ''} ${isRowDisbaled ? 'disabled' : ''} ${screenSize < 500 ? 'responsive-table' : ''}`;
+    `table-row${checked ? ' selected-row' : ''}${isRowDisbaled ? ' disabled' : ''} ${screenSize < 500 ? 'responsive-table' : ''}`;
 
   const getUserData = (type, value) => (
     <div className={userCellClassName} key={`user-${type}-${id}`}>
@@ -115,12 +115,12 @@ const TableBodyRow = ({
           :
             <>
               <Button
-                onClick={(e) => handleEditRow(id)}
+                onClick={() => handleEditRow(id)}
                 buttonImage={EditIcon}
                 imgType="edit"
               />
               <Button
-                onClick={(e) => handleDeleteTableRow(id)}
+                onClick={() => handleDeleteTableRow(id)}
                 buttonImage={DeleteIcon}
                 imgType="delete"
               />
@@ -134,7 +134,7 @@ const TableBodyRow = ({
 
 TableBodyRow.propTypes = {
   tableCellData: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
