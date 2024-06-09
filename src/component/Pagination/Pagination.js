@@ -1,18 +1,20 @@
 import PropTypes from 'prop-types';
 //
-import Config from '../../config';
+import {
+  DISABLED,
+  DOTS,
+  ACTIVE,
+  NORMAL,
+  COMMON_BUTTON_CLS_NAME,
+  ROW_COUNT_PER_PAGE,
+}
+from '../../constants';
 // Components
 import Button from '../Button';
 // helpers
 import getPaginationList from '../../helpers/getPaginationList';
 //
 import './pagination.styles.scss';
-
-const DISABLED = 'disabled';
-const ACTIVE = 'active';
-const NORMAL = 'normal';
-const COMMON_BUTTON_CLS_NAME = 'page-action-button';
-const { ROW_COUNT_PER_PAGE, DOTS } = Config;
 
 const Pagination = ({
   currentPage,

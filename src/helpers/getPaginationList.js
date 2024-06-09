@@ -1,6 +1,4 @@
-import config from "../config";
-
-const { DOTS } = config;
+import { DOTS } from "../constants";
 
 const getPaginationList = ({
   totalDataCount,

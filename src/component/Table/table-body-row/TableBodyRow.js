@@ -9,10 +9,8 @@ import EditIcon from '../../../asset/icon/edit.png';
 import DeleteIcon from '../../../asset/icon/delete.png';
 import CancelIcon from '../../../asset/icon/close.png';
 import SaveIcon from '../../../asset/icon/checkmark.png';
-// Config
-import Config from '../../../config';
-
-const { EDIT_ROW, NON_EDITABLE_FIELD_NAME } = Config;
+// constants
+import { EDIT_ROW, NON_EDITABLE_FIELD_NAME } from '../../../constants';
 
 const TableBodyRow = ({
   editableRowData,

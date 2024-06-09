@@ -10,10 +10,12 @@ import Pagination from "../Pagination";
 import UserContext from "../../context/userContext";
 // helpers
 import getWindowSize from '../../helpers/utils';
-// Config
-import Config from '../../config';
-
-const { EDIT_ROW, DEFAULT_ACTION, ROW_COUNT_PER_PAGE } = Config;
+// constant
+import { 
+  EDIT_ROW,
+  DEFAULT_ACTION,
+  ROW_COUNT_PER_PAGE,
+} from '../../constants';
 
 const Table = ({ tableData = [], setDisableSearch, isCheckBoxDisabled }) => {
 

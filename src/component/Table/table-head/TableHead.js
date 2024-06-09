@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 import CheckBox from "../../CheckBox";
 // Context
 import UserContext from "../../../context/userContext";
-// Config
-import Config from '../../../config';
+// constants
+import { USER_TABLE_HEAD } from '../../../constants';
 //
 import '../table.styles.scss';
-
-const { USER_TABLE_HEAD } = Config;
 
 const TableHead = ({ screenSize, onSelectAllTableRow, isCheckBoxDisabled }) => {
 
