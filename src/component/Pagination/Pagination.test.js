@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Pagination from "./Pagination";
 
-
 const mockGetPaginationList = jest.fn();
 
 jest.mock('../Button', () => props => <div data-testid="mock-button" {...props} />);

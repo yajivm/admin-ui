@@ -28,7 +28,7 @@ let mockUserProviderValues = {
   deleteSelectedUsers: jest.fn(),
   getCurrentTableData: jest.fn(),
   setAllUsersChecked: jest.fn(),
-  onCheckAllUsers: jest.fn(),
+  onCheckCurrentTableAllUsers: jest.fn(),
   onSelectUser: jest.fn(),
   handleDeleteUserData: jest.fn(),
   updateUsersListData: jest.fn(),

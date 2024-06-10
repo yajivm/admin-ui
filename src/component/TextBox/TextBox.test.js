@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import TextBox from './TextBox';
 
 const mockHandleInputChange = jest.fn();
@@ -7,20 +8,20 @@ const mockProps = {
   handleInputChange: mockHandleInputChange,
   Id: '1',
   testID: 'text-input',
-  value: 'test',
+  value: '',
 };
 
 describe('TextBox', ()=> {
   it('should render the component', () => {
     render(<TextBox {...mockProps} />);
 
-    expect(screen.getByTestId('text-input')).toBeInTheDocument();
+    screen.getByTestId('text-input')
   });
 
-  it.skip('should trigger handleInputChange function when input value changes', async () => {
+  it('should trigger handleInputChange function when input value changes', () => {
     render(<TextBox {...mockProps} />);
 
-    fireEvent.change(screen.getByTestId('text-input'), { target: { value: 'test' }});
+    userEvent.type(screen.getByTestId('text-input'), 'test');
     
     expect(mockHandleInputChange).toHaveBeenCalledWith(mockProps.field, 'test', mockProps.Id);
   });

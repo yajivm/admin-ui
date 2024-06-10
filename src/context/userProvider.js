@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 //
 import UserContext from "./userContext";
-
 // Service
 import { getUsersListService } from "../service/users.service";
 
@@ -21,13 +20,13 @@ const UserProvider = ({ children }) => {
   const getUsersList = () => {
     getUsersListService()
       .then(({ data }) => {
-        data.forEach(obj => {
+        data?.forEach(obj => {
           obj.checked = false;
         });
         setUsersList(data);
       })
       .catch(err => {
-        console.log('users api err=====>', err.response);
+        console.log('getUsersList err=====>', err);
       });
   }
 
@@ -77,7 +76,7 @@ const UserProvider = ({ children }) => {
     getCurrentTableData(0, 10);
   }, [getCurrentTableData]);
 
-  const onCheckAllUsers = (checked) => {
+  const onCheckCurrentTableAllUsers = (checked) => {
     let checkedUsers = currentUserTableList.map(user => {
       return {
         ...user,
@@ -152,7 +151,7 @@ const UserProvider = ({ children }) => {
       isAllUsersChecked,
       currentUserTableList,
       deleteSelectedUsers,
-      onCheckAllUsers,
+      onCheckCurrentTableAllUsers,
       onSelectUser,
       setUsersList,
       updateUsersListData,

@@ -24,7 +24,7 @@ const Table = ({ tableData = [], setDisableSearch, isCheckBoxDisabled }) => {
     deleteSelectedUsers,
     getCurrentTableData,
     setAllUsersChecked,
-    onCheckAllUsers,
+    onCheckCurrentTableAllUsers,
     onSelectUser,
     handleDeleteUserData,
     updateUsersListData,
@@ -89,7 +89,7 @@ const Table = ({ tableData = [], setDisableSearch, isCheckBoxDisabled }) => {
       <div className="table">
         <TableHead
           screenSize={screenSize}
-          onSelectAllTableRow={onCheckAllUsers}
+          onSelectAllTableRow={onCheckCurrentTableAllUsers}
           isCheckBoxDisabled={isCheckBoxDisabled}
         />
         {currentUserTableList.map((data, ind) => (
